@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Bán Hàng - Limore Cloud Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            padding: 15px;
+            background: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.4;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            color: #ff3333;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            color: #ff3333;
+            font-size: 22px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ff3333;
+            padding-bottom: 5px;
+        }
+
+        .package {
+            background: #2a2a2a;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(255, 51, 51, 0.2);
+            transition: transform 0.2s ease;
+        }
+
+        .package:hover {
+            transform: translateY(-5px);
+        }
+
+        .package h3 {
+            margin: 0 0 10px;
+            color: #ffffff;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+        }
+
+        .package h3 i {
+            margin-right: 8px;
+            color: #ff3333;
+        }
+
+        .price {
+            font-weight: 700;
+            color: #ff3333;
+            font-size: 18px;
+            margin: 5px 0;
+        }
+
+        .buy-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 20px;
+            background: #ff3333;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            font-size: 14px;
+        }
+
+        .buy-button:hover {
+            background: #cc2929;
+        }
+
+        .buy-button.disabled {
+            background: #555555;
+            cursor: not-allowed;
+        }
+
+        .buy-button .spinner {
+            display: none;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #fff;
+            border-top: 2px solid #ff3333;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .note {
+            font-size: 12px;
+            color: #aaaaaa;
+            margin-top: 5px;
+        }
+
+        .contact {
+            text-align: center;
+            margin-top: 20px;
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(255, 51, 51, 0.2);
+        }
+
+        .payment-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2a2a2a;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(255, 51, 51, 0.2);
+            z-index: 10;
+            color: #ffffff;
+            min-width: 180px;
+        }
+
+        .payment-options button {
+            display: block;
+            padding: 8px;
+            margin: 5px 0;
+            background: #ff3333;
+            color: #ffffff;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s ease;
+            width: 100%;
+        }
+
+        .payment-options button:hover {
+            background: #cc2929;
+        }
+
+        .auth-container {
+            background: #2a2a2a;
+            padding: 15px;
+            margin: 0 auto 15px auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(255, 51, 51, 0.2);
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .auth-container h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #ff3333;
+        }
+
+        .auth-container input, .auth-container select, .auth-container textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ff3333;
+            border-radius: 5px;
+            font-size: 12px;
+            background: #333333;
+            color: #ffffff;
+            transition: border-color 0.2s ease;
+        }
+
+        .auth-container input:focus, .auth-container select:focus, .auth-container textarea:focus {
+            outline: none;
+            border-color: #cc2929;
+        }
+
+        .auth-container button {
+            padding: 8px 15px;
+            background: #ff3333;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            transition: background 0.2s ease;
+        }
+
+        .auth-container button:hover {
+            background: #cc2929;
+        }
+
+        .auth-container .toggle-link {
+            color: #ff3333;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+            transition: color 0.2s ease;
+        }
+
+        .auth-container .toggle-link:hover {
+            color: #cc2929;
+        }
+
+        .account-info {
+            display: none;
+            padding: 10px;
+        }
+
+        .account-info p {
+            margin: 5px 0;
+            font-size: 12px;
+            color: #aaaaaa;
+        }
+
+        .account-info button {
+            background: #ff3333;
+            margin: 5px 0;
+            width: 100%;
+            padding: 8px;
+        }
+
+        .account-info button:hover {
+            background: #cc2929;
+        }
+
+        .account-info .logout-btn {
+            background: #ff6666;
+        }
+
+        .account-info .logout-btn:hover {
+            background: #e65c5c;
+        }
+
+        #recharge-options, #recharge-form, #bank-recharge, #admin-panel, #support-form, #support-list {
+            display: none;
+        }
+
+        .admin-users, .admin-transactions, .admin-recharge-requests {
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        .admin-users ul, .admin-transactions ul, .admin-recharge-requests ul, #support-requests {
+            list-style: none;
+            padding: 0;
+        }
+
+        .admin-users li, .admin-transactions li, .admin-recharge-requests li, #support-requests li {
+            padding: 8px;
+            border-bottom: 1px solid #ff3333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #333333;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            flex-wrap: wrap;
+        }
+
+        .admin-users button, .admin-transactions button, .admin-recharge-requests button, #support-requests button {
+            background: #ff6666;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 5px;
+        }
+
+        .admin-users button:hover, .admin-transactions button:hover, .admin-recharge-requests button:hover, #support-requests button:hover {
+            background: #e65c5c;
+        }
+
+        .admin-recharge-requests .approve-btn {
+            background: #4caf50;
+            margin-right: 5px;
+        }
+
+        .admin-recharge-requests .approve-btn:hover {
+            background: #45a049;
+        }
+
+        .package-content {
+            transition: opacity 0.2s ease;
+        }
+
+        .package-content.hidden {
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            background: #ff3333;
+            color: #ffffff;
+            padding: 8px 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(255, 51, 51, 0.3);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 100;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        #notifications-list p {
+            font-size: 12px;
+            color: #aaaaaa;
+            margin: 5px 0;
+            padding: 5px;
+            background: #333333;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .package {
+                padding: 10px;
+            }
+
+            .package h3 {
+                font-size: 16px;
+            }
+
+            .price {
+                font-size: 16px;
+            }
+
+            .buy-button {
+                padding: 8px 15px;
+                font-size: 12px;
+                width: 100%;
+            }
+
+            .auth-container {
+                padding: 10px;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+
+            .package h3 {
+                font-size: 14px;
+            }
+
+            .buy-button {
+                padding: 6px 12px;
+                font-size: 10px;
+            }
+
+            .auth-container {
+                padding: 8px;
+            }
+
+            .toast {
+                font-size: 10px;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>MENU BÁN HÀNG - LIMORE CLOUD GAME</h1>
+
+    <div class="auth-container" id="auth-container">
+        <div id="login-form">
+            <h2>Đăng Nhập</h2>
+            <input type="text" id="login-username" placeholder="Tên người dùng">
+            <input type="password" id="login-password" placeholder="Mật khẩu">
+            <button onclick="login()">Đăng Nhập</button>
+            <span class="toggle-link" onclick="toggleAuth()">Đăng ký</span>
+        </div>
+        <div id="register-form" style="display: none;">
+            <h2>Đăng Ký</h2>
+            <input type="text" id="register-username" placeholder="Tên người dùng">
+            <input type="password" id="register-password" placeholder="Mật khẩu">
+            <button onclick="register()">Đăng Ký</button>
+            <span class="toggle-link" onclick="toggleAuth()">Đăng nhập</span>
+        </div>
+        <div id="account-info" class="account-info">
+            <h2>Tài Khoản</h2>
+            <p><strong>Tên:</strong> <span id="account-username"></span></p>
+            <p><strong>Số dư:</strong> <span id="account-balance">0 VNĐ</span></p>
+            <div id="notifications-list" style="margin-top: 10px; max-height: 100px; overflow-y: auto;"></div>
+            <button onclick="showRechargeOptions()">Nạp Tiền</button>
+            <button onclick="showSupportForm()">Hỗ Trợ</button>
+            <button id="admin-button" style="display: none;" onclick="showAdminPanel()">Quản Lý</button>
+            <button class="logout-btn" onclick="logout()">Đăng Xuất</button>
+        </div>
+        <div id="recharge-options" style="display: none;">
+            <h2>Nạp Tiền</h2>
+            <button onclick="showRechargeForm()">Nạp Thẻ</button>
+            <button onclick="showBankRecharge()">Nạp Bank</button>
+            <button onclick="hideRechargeOptions()">Hủy</button>
+        </div>
+        <div id="recharge-form" style="display: none;">
+            <h2>Nạp Thẻ Cào</h2>
+            <select id="card-type">
+                <option value="">Chọn loại thẻ</option>
+                <option value="viettel">Viettel</option>
+                <option value="mobifone">Mobifone</option>
+                <option value="vinaphone">Vinaphone</option>
+            </select>
+            <input type="text" id="card-code" placeholder="Mã thẻ">
+            <input type="text" id="card-serial" placeholder="Số seri">
+            <button onclick="recharge()">Nạp</button>
+            <button onclick="hideRechargeForm()">Hủy</button>
+        </div>
+        <div id="bank-recharge" style="display: none;">
+            <h2>Nạp Qua Bank</h2>
+            <p>TK Viettinbank: 106882688204<br>Nội dung: <span id="recharge-content">Nạp tiền - <span id="username-for-recharge"></span></span></p>
+            <input type="number" id="bank-amount" placeholder="Số tiền (VNĐ)">
+            <button onclick="rechargeBank()">Xác Nhận</button>
+            <button onclick="hideBankRecharge()">Hủy</button>
+        </div>
+        <div id="admin-panel" style="display: none;">
+            <h2>Quản Lý Người Dùng</h2>
+            <div class="admin-users">
+                <h3>Danh sách người dùng</h3>
+                <ul id="user-list"></ul>
+            </div>
+            <div class="admin-transactions">
+                <h3>Lịch sử giao dịch</h3>
+                <ul id="transaction-list"></ul>
+            </div>
+            <div class="admin-recharge-requests">
+                <h3>Yêu cầu nạp tiền</h3>
+                <ul id="recharge-request-list"></ul>
+            </div>
+            <button onclick="hideAdminPanel()">Quay Lại</button>
+            <button onclick="showSupportList()">Yêu Cầu Hỗ Trợ</button>
+        </div>
+        <div id="support-form" style="display: none;">
+            <h2>Hỗ Trợ Khách Hàng</h2>
+            <textarea id="support-message" placeholder="Nhập yêu cầu hỗ trợ của bạn..."></textarea>
+            <button onclick="submitSupport()">Gửi Yêu Cầu</button>
+            <button onclick="hideSupportForm()">Hủy</button>
+        </div>
+        <div id="support-list" style="display: none;">
+            <h2>Danh Sách Yêu Cầu Hỗ Trợ</h2>
+            <ul id="support-requests"></ul>
+            <button onclick="hideSupportList()">Quay Lại</button>
+        </div>
+    </div>
+
+    <h2>Chơi Game PC Trên Điện Thoại – 5/4/2025</h2>
+
+    <div class="package" id="package1">
+        <h3><i class="fa fa-gamepad"></i> 1. Gói Cơ Bản</h3>
+        <div class="package-content" id="content1">
+            <p><strong>Chơi:</strong> Age of Empires II, Diablo II</p>
+            <p><strong>Yêu cầu:</strong> Android 5.0+, RAM 2GB</p>
+            <p><strong class="price">50.000 VNĐ</strong> - 2 ngày</p>
+            <p class="note">*Link tải qua Telegram sau thanh toán</p>
+        </div>
+        <div class="buy-button disabled" id="buy1" data-price="50000" data-package="Gói Cơ Bản" onclick="togglePayment('payment1', 50000, 'Gói Cơ Bản', 'content1')">
+            <i class="fa fa-shopping-cart"></i> <span>Mua Hàng</span>
+            <div class="spinner" id="spinner1"></div>
+        </div>
+        <div id="payment1" class="payment-options">
+            <button onclick="payWithBalance(50000, 'Gói Cơ Bản', 'content1')">Thanh Toán Bằng Số Dư</button>
+            <div>Bank: Viettinbank 106882688204<br>Nội dung: Limorecloud</div>
+            <button onclick="completePurchase(50000, 'Gói Cơ Bản', 'content1')">Thanh Toán Qua Telegram</button>
+        </div>
+    </div>
+
+    <div class="package" id="package2">
+        <h3><i class="fa fa-gamepad"></i> 2. Gói Gaming</h3>
+        <div class="package-content" id="content2">
+            <p><strong>Chơi:</strong> God of War (PSP), Mario Kart</p>
+            <p><strong>Yêu cầu:</strong> Android 7.0+, RAM 4GB</p>
+            <p><strong class="price">150.000 VNĐ</strong> - 1 tuần</p>
+            <p class="note">*Link tải qua Telegram sau thanh toán</p>
+        </div>
+        <div class="buy-button disabled" id="buy2" data-price="150000" data-package="Gói Gaming" onclick="togglePayment('payment2', 150000, 'Gói Gaming', 'content2')">
+            <i class="fa fa-shopping-cart"></i> <span>Mua Hàng</span>
+            <div class="spinner" id="spinner2"></div>
+        </div>
+        <div id="payment2" class="payment-options">
+            <button onclick="payWithBalance(150000, 'Gói Gaming', 'content2')">Thanh Toán Bằng Số Dư</button>
+            <div>Bank: Viettinbank 106882688204<br>Nội dung: Limorecloud</div>
+            <button onclick="completePurchase(150000, 'Gói Gaming', 'content2')">Thanh Toán Qua Telegram</button>
+        </div>
+    </div>
+
+    <div class="package" id="package3">
+        <h3><i class="fa fa-cloud"></i> 3. Gói Cao Cấp</h3>
+        <div class="package-content" id="content3">
+            <p><strong>Chơi:</strong> GTA V, Cyberpunk 2077</p>
+            <p><strong>Yêu cầu:</strong> Android 9.0+, Wifi/4G</p>
+            <p><strong class="price">275.000 VNĐ</strong> - 2 tháng</p>
+            <p class="note">*Link tải qua Telegram sau thanh toán</p>
+        </div>
+        <div class="buy-button disabled" id="buy3" data-price="275000" data-package="Gói Cao Cấp" onclick="togglePayment('payment3', 275000, 'Gói Cao Cấp', 'content3')">
+            <i class="fa fa-shopping-cart"></i> <span>Mua Hàng</span>
+            <div class="spinner" id="spinner3"></div>
+        </div>
+        <div id="payment3" class="payment-options">
+            <button onclick="payWithBalance(275000, 'Gói Cao Cấp', 'content3')">Thanh Toán Bằng Số Dư</button>
+            <div>Bank: Viettinbank 106882688204<br>Nội dung: Limorecloud</div>
+            <button onclick="completePurchase(275000, 'Gói Cao Cấp', 'content3')">Thanh Toán Qua Telegram</button>
+        </div>
+    </div>
+
+    <div class="package" id="package4">
+        <h3><i class="fa fa-tools"></i> 4. Gói Tùy Chọn</h3>
+        <div class="package-content" id="content4">
+            <p><strong>Chơi:</strong> Game mobile/PC nhẹ</p>
+            <p><strong>Tối ưu:</strong> Theo yêu cầu</p>
+            <p><strong class="price">549.000 VNĐ</strong> - Vĩnh viễn</p>
+            <p class="note">*Link tải qua Telegram sau thanh toán</p>
+        </div>
+        <div class="buy-button disabled" id="buy4" data-price="549000" data-package="Gói Tùy Chọn" onclick="togglePayment('payment4', 549000, 'Gói Tùy Chọn', 'content4')">
+            <i class="fa fa-shopping-cart"></i> <span>Mua Hàng</span>
+            <div class="spinner" id="spinner4"></div>
+        </div>
+        <div id="payment4" class="payment-options">
+            <button onclick="payWithBalance(549000, 'Gói Tùy Chọn', 'content4')">Thanh Toán Bằng Số Dư</button>
+            <div>Bank: Viettinbank 106882688204<br>Nội dung: Limorecloud</div>
+            <button onclick="completePurchase(549000, 'Gói Tùy Chọn', 'content4')">Thanh Toán Qua Telegram</button>
+        </div>
+    </div>
+
+    <div class="contact">
+        <h2>Liên Hệ</h2>
+        <p><strong>Telegram:</strong> <a href="https://t.me/limorecloudgame" target="_blank">@limorecloudgame</a></p>
+        <p><strong>Thanh toán:</strong> Momo, Bank</p>
+        <p><strong>Giao hàng:</strong> 10-20 phút qua Telegram/Email</p>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        let notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+        let supportRequests = JSON.parse(localStorage.getItem('supportRequests')) || [];
+        let rechargeRequests = JSON.parse(localStorage.getItem('rechargeRequests')) || [];
+
+        function initializeAdmin() {
+            if (!users.some(u => u.username === 'admin')) {
+                users.push({ username: 'admin', password: 'admin123', balance: 1000000, isAdmin: true });
+                localStorage.setItem('users', JSON.stringify(users));
+                console.log('Tài khoản admin đã được khởi tạo: admin/admin123');
+            }
+        }
+
+        initializeAdmin();
+
+        window.onload = function() {
+            const savedUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (savedUser) {
+                currentUser = users.find(u => u.username === savedUser.username && u.password === savedUser.password) || null;
+                if (currentUser) {
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    document.getElementById('account-username').textContent = currentUser.username;
+                    document.getElementById('account-balance').textContent = currentUser.balance.toLocaleString('vi-VN') + ' VNĐ';
+                    document.getElementById('login-form').style.display = 'none';
+                    document.getElementById('register-form').style.display = 'none';
+                    document.getElementById('account-info').style.display = 'block';
+                    if (currentUser.isAdmin) {
+                        document.getElementById('admin-button').style.display = 'block';
+                    }
+                    enableBuyButtons();
+                    showToast('Đã khôi phục phiên đăng nhập trước đó!');
+                    displayNotifications();
+                }
+            }
+        };
+
+        function togglePayment(paymentId, price, packageName, contentId) {
+            if (!currentUser) {
+                showToast('Vui lòng đăng nhập để mua hàng!');
+                return;
+            }
+            console.log(`Toggle payment for ${paymentId}`);
+            const paymentDiv = document.getElementById(paymentId);
+            if (paymentDiv.style.display === "block") {
+                paymentDiv.style.display = "none";
+            } else {
+                document.querySelectorAll('.payment-options').forEach(div => {
+                    div.style.display = "none";
+                });
+                paymentDiv.style.display = "block";
+            }
+        }
+
+        document.addEventListener('click', function(event) {
+            const paymentOptions = document.querySelectorAll('.payment-options');
+            const buyButtons = document.querySelectorAll('.buy-button');
+            let isClickInside = false;
+
+            buyButtons.forEach(button => {
+                if (button.contains(event.target)) isClickInside = true;
+            });
+            paymentOptions.forEach(option => {
+                if (option.contains(event.target)) isClickInside = true;
+            });
+
+            if (!isClickInside) {
+                paymentOptions.forEach(option => {
+                    option.style.display = "none";
+                });
+            }
+        });
+
+        function hidePackageContent(contentId) {
+            const content = document.getElementById(contentId);
+            content.classList.add('hidden');
+        }
+
+        function showPackageContent(contentId) {
+            const content = document.getElementById(contentId);
+            content.classList.remove('hidden');
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.classList.add('toast');
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+        function toggleAuth() {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            if (loginForm.style.display === 'none') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+            }
+        }
+
+        function login() {
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value.trim();
+            if (username && password) {
+                const user = users.find(u => u.username === username && u.password === password);
+                if (user) {
+                    currentUser = user;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    document.getElementById('account-username').textContent = currentUser.username;
+                    document.getElementById('account-balance').textContent = currentUser.balance.toLocaleString('vi-VN') + ' VNĐ';
+                    document.getElementById('login-form').style.display = 'none';
+                    document.getElementById('register-form').style.display = 'none';
+                    document.getElementById('account-info').style.display = 'block';
+                    if (user.isAdmin) {
+                        document.getElementById('admin-button').style.display = 'block';
+                    }
+                    enableBuyButtons();
+                    showToast('Đăng nhập thành công! Bây giờ bạn có thể mua hàng.');
+                    displayNotifications();
+                } else {
+                    showToast('Tên người dùng hoặc mật khẩu không đúng! Vui lòng đăng ký nếu chưa có tài khoản.');
+                }
+            } else {
+                showToast('Vui lòng nhập đầy đủ thông tin!');
+            }
+        }
+
+        function register() {
+            const username = document.getElementById('register-username').value.trim();
+            const password = document.getElementById('register-password').value.trim();
+            if (username && password) {
+                if (users.find(u => u.username === username)) {
+                    showToast('Tên người dùng đã tồn tại!');
+                    return;
+                }
+                const newUser = { 
+                    username: username, 
+                    password: password, 
+                    balance: username === 'admin' ? 1000000 : 0, 
+                    isAdmin: username === 'admin' 
+                };
+                users.push(newUser);
+                currentUser = newUser;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                localStorage.setItem('users', JSON.stringify(users));
+                document.getElementById('account-username').textContent = currentUser.username;
+                document.getElementById('account-balance').textContent = currentUser.balance.toLocaleString('vi-VN') + ' VNĐ';
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('register-form').style.display = 'none';
+                document.getElementById('account-info').style.display = 'block';
+                if (newUser.isAdmin) {
+                    document.getElementById('admin-button').style.display = 'block';
+                }
+                enableBuyButtons();
+                showToast('Đăng ký thành công! Bây giờ bạn có thể mua hàng.');
+            } else {
+                showToast('Vui lòng nhập đầy đủ thông tin!');
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            document.getElementById('account-info').style.display = 'none';
+            document.getElementById('recharge-options').style.display = 'none';
+            document.getElementById('recharge-form').style.display = 'none';
+            document.getElementById('bank-recharge').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'none';
+            document.getElementById('support-form').style.display = 'none';
+            document.getElementById('support-list').style.display = 'none';
+            document.getElementById('admin-button').style.display = 'none';
+            document.getElementById('login-username').value = '';
+            document.getElementById('login-password').value = '';
+            disableBuyButtons();
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('register-form').style.display = 'none';
+            document.querySelectorAll('.package-content').forEach(content => {
+                content.classList.remove('hidden');
+            });
+            document.querySelectorAll('.buy-button').forEach(button => {
+                button.querySelector('span').textContent = 'Mua Hàng';
+                button.style.background = '#ff3333';
+                button.classList.add('disabled');
+                button.onclick = null;
+            });
+            showToast('Đăng xuất thành công!');
+        }
+
+        function showRechargeOptions() {
+            document.getElementById('account-info').style.display = 'none';
+            document.getElementById('recharge-options').style.display = 'block';
+        }
+
+        function hideRechargeOptions() {
+            document.getElementById('recharge-options').style.display = 'none';
+            document.getElementById('account-info').style.display = 'block';
+        }
+
+        function showRechargeForm() {
+            document.getElementById('recharge-options').style.display = 'none';
+            document.getElementById('recharge-form').style.display = 'block';
+        }
+
+        function hideRechargeForm() {
+            document.getElementById('recharge-form').style.display = 'none';
+            document.getElementById('recharge-options').style.display = 'block';
+            document.getElementById('card-type').value = '';
+            document.getElementById('card-code').value = '';
+            document.getElementById('card-serial').value = '';
+        }
+
+        function recharge() {
+            const cardType = document.getElementById('card-type').value;
+            const cardCode = document.getElementById('card-code').value.trim();
+            const cardSerial = document.getElementById('card-serial').value.trim();
+
+            if (!cardType || !cardCode || !cardSerial) {
+                showToast('Vui lòng chọn loại thẻ và nhập đầy đủ mã thẻ, số seri!');
+                return;
+            }
+
+            const isValidCard = checkCardValidity(cardType, cardCode, cardSerial);
+            if (!isValidCard) {
+                showToast('Mã thẻ hoặc số seri không hợp lệ! Vui lòng kiểm tra lại.');
+                return;
+            }
+
+            const cardValue = getCardValue(cardCode);
+            if (cardValue <= 0) {
+                showToast('Thẻ không có giá trị! Vui lòng thử thẻ khác.');
+                return;
+            }
+
+            currentUser.balance += cardValue;
+            users = users.map(u => u.username === currentUser.username ? currentUser : u);
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            document.getElementById('account-balance').textContent = currentUser.balance.toLocaleString('vi-VN') + ' VNĐ';
+
+            transactions.push({
+                username: currentUser.username,
+                type: 'Nạp thẻ',
+                amount: cardValue,
+                details: `${cardType} - ${cardCode} - ${cardSerial}`,
+                date: new Date().toLocaleString('vi-VN')
+            });
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+
+            showToast(`Nạp thẻ ${cardValue.toLocaleString('vi-VN')} VNĐ thành công!`);
+            hideRechargeForm();
+        }
+
+        function checkCardValidity(cardType, cardCode, cardSerial) {
+            const codeLength = cardType === 'viettel' ? 13 : (cardType === 'mobifone' ? 12 : 11);
+            const serialLength = cardType === 'viettel' ? 11 : (cardType === 'mobifone' ? 10 : 9);
+
+            const isCodeValid = /^\d+$/.test(cardCode) && cardCode.length === codeLength;
+            const isSerialValid = /^\d+$/.test(cardSerial) && cardSerial.length === serialLength;
+
+            return isCodeValid && isSerialValid;
+        }
+
+        function getCardValue(cardCode) {
+            const lastDigit = parseInt(cardCode.slice(-1));
+            return lastDigit % 2 === 0 ? 100000 : 50000;
+        }
+
+        function showBankRecharge() {
+            document.getElementById('recharge-options').style.display = 'none';
+            document.getElementById('bank-recharge').style.display = 'block';
+            document.getElementById('username-for-recharge').textContent = currentUser.username;
+        }
+
+        function hideBankRecharge() {
+            document.getElementById('bank-recharge').style.display = 'none';
+            document.getElementById('recharge-options').style.display = 'block';
+            document.getElementById('bank-amount').value = '';
+        }
+
+        function rechargeBank() {
+            const amount = parseInt(document.getElementById('bank-amount').value);
+            if (amount && amount > 0) {
+                rechargeRequests.push({
+                    username: currentUser.username,
+                    amount: amount,
+                    status: 'pending',
+                    date: new Date().toLocaleString('vi-VN')
+                });
+                localStorage.setItem('rechargeRequests', JSON.stringify(rechargeRequests));
+                showToast(`Yêu cầu nạp ${amount.toLocaleString('vi-VN')} VNĐ qua ngân hàng đã được gửi! Chờ admin xác nhận.`);
+                hideBankRecharge();
+                hideRechargeOptions();
+            } else {
+                showToast('Vui lòng nhập số tiền hợp lệ!');
+            }
+        }
+
+        function showAdminPanel() {
+            if (!currentUser || !currentUser.isAdmin) {
+                showToast('Chỉ admin mới có quyền truy cập!');
+                return;
+            }
+            document.getElementById('account-info').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'block';
+            updateUserList();
+            updateTransactionList();
+            updateRechargeRequestList();
+        }
+
+        function hideAdminPanel() {
+            document.getElementById('admin-panel').style.display = 'none';
+            document.getElementById('account-info').style.display = 'block';
+        }
+
+        function updateUserList() {
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = '';
+            users.forEach(user => {
+                if (!user.isAdmin) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        ${user.username} - Số dư: ${user.balance.toLocaleString('vi-VN')} VNĐ 
+                        <div>
+                            <input type="number" id="balance-${user.username}" placeholder="Cập nhật số dư" style="width: 80px;">
+                            <button onclick="updateBalance('${user.username}')">Cập nhật</button>
+                            <button onclick="deleteUser('${user.username}')">Xóa</button>
+                        </div>
+                    `;
+                    userList.appendChild(li);
+                }
+            });
+        }
+
+        function updateBalance(username) {
+            const newBalance = parseInt(document.getElementById(`balance-${username}`).value);
+            if (newBalance >= 0) {
+                const user = users.find(u => u.username === username);
+                const oldBalance = user.balance;
+                user.balance = newBalance;
+                if (currentUser.username === username) {
+                    currentUser.balance = newBalance;
+                    document.getElementById('account-balance').textContent = currentUser.balance.toLocaleString('vi-VN') + ' VNĐ';
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                }
+                localStorage.setItem('users', JSON.stringify(users));
+                transactions.push({
+                    username: username,
+                    type: 'Cập nhật số dư',
+                    amount: newBalance - oldBalance,
+                    details: `Admin cập nhật`,
+                    date: new Date().toLocaleString('vi-VN')
+                });
+                localStorage.setItem('transactions', JSON.stringify(transactions));
+                updateUserList();
+                updateTransactionList();
+                showToast(`Cập nhật số dư cho ${username} thành công!`);
+            } else {
+                showToast('Vui lòng nhập số dư hợp lệ!');
+            }
+        }
+
+        function deleteUser(username) {
+            if (confirm(`Bạn có chắc chắn muốn xóa tài khoản ${username}?`)) {
+                users = users.filter(u => u.username !== username);
+                localStorage.setItem('users', JSON.stringify(users));
+                transactions.push({
+                    username: username,
+                    type: 'Xóa tài khoản',
+                    amount: 0,
+                    details: `Admin xóa`,
+                    date: new Date().toLocaleString('vi-VN')
+                });
+                localStorage.setItem('transactions', JSON.stringify(transactions));
+                updateUserList();
+                updateTransactionList();
+                showToast(`Đã xóa tài khoản ${username}!`);
+            }
+        }
+
+        function updateTransactionList() {
+            const transactionList = document.getElementById('transaction-list');
+            transactionList.innerHTML = '';
+            transactions.forEach((trans, index) => {
+                const li = document.createElement('li');
+                const amountColor = trans.amount >= 0 ? '#00ddeb' : '#ff6a88';
+                li.innerHTML = `
+                    <span>${trans.username}</span> - 
+                    <span>${trans.type}</span>: 
+                    <span style="color: ${amountColor}">${trans.amount.toLocaleString('vi-VN')} VNĐ</span> - 
+                    <span>${trans.details}</span> - 
+                    <span>${trans.date}</span>
+                    <button onclick="deleteTransaction(${index})">Xóa</button>
+                `;
+                transactionList.appendChild(li);
+            });
+        }
+
+        function deleteTransaction(index) {
+            if (confirm('Bạn có chắc chắn muốn xóa giao dịch này?')) {
+                transactions.splice(index, 1);
+                localStorage.setItem('transactions', JSON.stringify(transactions));
+                updateTransactionList();
+                showToast('Đã xóa giao dịch!');
+            }
+        }
+
+        function updateRechargeRequestList() {
+            const rechargeList = document.getElementById('recharge-request-list');
+            rechargeList.innerHTML = '';
+            rechargeRequests.forEach((req, index) => {
+                const li = document.createElement('li');
+                let buttons = `<button onclick="deleteRechargeRequest(${index})">Xóa</button>`;
+                if (req.status === 'pending') {
+                    buttons = `
+                        <button class="approve-btn" onclick="approveRechargeRequest(${index})">Duyệt</button>
+                        <button onclick="deleteRechargeRequest(${index})">Xóa</button>
+                    `;
+                }
+                li.innerHTML = `
+                    <span>${req.username}</span> - 
+                    <span>${req.amount.toLocaleString('vi-VN')} VNĐ</span> - 
+                    <span>${req.date}</span> - 
+                    <span style="color: ${req.status === 'pending' ? '#ff9800' : '#4caf50'}">[${req.status}]</span>
+                    ${buttons}
+                `;
+                rechargeList.appendChild(li);
+            });
+        }
+
+        function approveRechargeRequest(index) {
+            const req = rechargeRequests[index];
+            if (req.status !== 'pending') return;
+
+            const user = users.find(u => u.username === req.username);
+            if (user) {
+                user.balance += req.amount;
+                if (currentUser.username === req.username) {
+                    currentUser.balance = user.balance;
+                    document.getElementById('account-balance').textContent = currentUser.balance.toLocaleString('vi-VN') + ' VNĐ';
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                }
+                localStorage.setItem('users', JSON.stringify(users));
+
+                transactions.push({
+                    username: req.username,
+                    type: 'Nạp qua bank',
+                    amount: req.amount,
+                    details: 'Vietinbank - Admin duyệt',
+                    date: new Date().toLocaleString('vi-VN')
+                });
+                localStorage.setItem('transactions', JSON.stringify(transactions));
+            }
+
+            req.status = 'approved';
+            localStorage.setItem('rechargeRequests', JSON.stringify(rechargeRequests));
+            updateRechargeRequestList();
+            updateTransactionList();
+            showToast(`Đã duyệt ${req.amount.toLocaleString('vi-VN')} VNĐ cho ${req.username}!`);
+        }
+
+        function deleteRechargeRequest(index) {
+            if (confirm('Bạn có chắc chắn muốn xóa yêu cầu này?')) {
+                rechargeRequests.splice(index, 1);
+                localStorage.setItem('rechargeRequests', JSON.stringify(rechargeRequests));
+                updateRechargeRequestList();
+                showToast('Đã xóa yêu cầu nạp tiền!');
+            }
+        }
+
+        function enableBuyButtons() {
+            document.querySelectorAll('.buy-button').forEach(button => {
+                button.classList.remove('disabled');
+                const price = parseInt(button.dataset.price);
+                const packageName = button.dataset.package;
+                const contentId = `content${button.id.replace('buy', '')}`;
+                button.onclick = () => togglePayment(`payment${button.id.replace('buy', '')}`, price, packageName, contentId);
+            });
+        }
+
+        function disableBuyButtons() {
+            document.querySelectorAll('.buy-button').forEach(button => {
+                button.classList.add('disabled');
+                button.onclick = null;
+            });
+        }
+
+        function payWithBalance(price, packageName, contentId) {
+            console.log(`Pay with balance clicked: ${packageName}, ${price} VNĐ`);
+            if (!currentUser) {
+                showToast('Vui lòng đăng nhập trước!');
+                console.log('User not logged in');
+                return;
+            }
+            if (currentUser.balance < price) {
+                showToast('Số dư không đủ! Vui lòng nạp thêm tiền.');
+                console.log('Insufficient balance');
+                return;
+            }
+
+            if (confirm(`Bạn có chắc chắn muốn mua ${packageName} với giá ${price.toLocaleString('vi-VN')} VNĐ bằng số dư tài khoản không?`)) {
+                const spinner = document.getElementById(`spinner${contentId.replace('content', '')}`);
+                const buyButton = document.getElementById(`buy${contentId.replace('content', '')}`);
+                spinner.style.display = 'block';
+                buyButton.querySelector('span').textContent = 'Đang xử lý...';
+                buyButton.classList.add('disabled');
+
+                setTimeout(() => {
+                    currentUser.balance -= price;
+                    users = users.map(u => u.username === currentUser.username ? currentUser : u);
+                    localStorage.setItem('users', JSON.stringify(users));
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    document.getElementById('account-balance').textContent = currentUser.balance.toLocaleString('vi-VN') + ' VNĐ';
+
+                    transactions.push({
+                        username: currentUser.username,
+                        type: 'Mua hàng',
+                        amount: -price,
+                        details: packageName,
+                        date: new Date().toLocaleString('vi-VN')
+                    });
+                    localStorage.setItem('transactions', JSON.stringify(transactions));
+
+                    buyButton.querySelector('span').textContent = 'Đã Mua';
+                    buyButton.style.background = '#4caf50';
+                    buyButton.onclick = null;
+                    hidePackageContent(contentId);
+                    spinner.style.display = 'none';
+
+                    showToast(`Mua ${packageName} thành công! Đang chuyển đến Telegram...`);
+                    console.log('Redirecting to Telegram...');
+                    setTimeout(() => {
+                        try {
+                            window.location.href = 'https://t.me/limorecloudgame';
+                            console.log('Redirect successful');
+                        } catch (error) {
+                            console.error('Redirect failed:', error);
+                            showToast('Không thể chuyển hướng, vui lòng thử lại!');
+                        }
+                    }, 1000);
+                }, 1000);
+            } else {
+                console.log('Purchase cancelled');
+            }
+        }
+
+        function completePurchase(price, packageName, contentId) {
+            console.log(`Complete purchase clicked: ${packageName}, ${price} VNĐ`);
+            if (!currentUser) {
+                showToast('Vui lòng đăng nhập trước!');
+                console.log('User not logged in');
+                return;
+            }
+            if (currentUser.balance < price) {
+                showToast('Số dư không đủ! Vui lòng nạp thêm tiền.');
+                console.log('Insufficient balance');
+                return;
+            }
+
+            if (confirm(`Bạn có chắc chắn muốn mua ${packageName} với giá ${price.toLocaleString('vi-VN')} VNĐ qua Telegram không?`)) {
+                const spinner = document.getElementById(`spinner${contentId.replace('content', '')}`);
+                const buyButton = document.getElementById(`buy${contentId.replace('content', '')}`);
+                spinner.style.display = 'block';
+                buyButton.querySelector('span').textContent = 'Đang xử lý...';
+                buyButton.classList.add('disabled');
+
+                setTimeout(() => {
+                    currentUser.balance -= price;
+                    users = users.map(u => u.username === currentUser.username ? currentUser : u);
+                    localStorage.setItem('users', JSON.stringify(users));
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    document.getElementById('account-balance').textContent = currentUser.balance.toLocaleString('vi-VN') + ' VNĐ';
+
+                    transactions.push({
+                        username: currentUser.username,
+                        type: 'Mua qua Telegram',
+                        amount: -price,
+                        details: packageName,
+                        date: new Date().toLocaleString('vi-VN')
+                    });
+                    localStorage.setItem('transactions', JSON.stringify(transactions));
+
+                    buyButton.querySelector('span').textContent = 'Đã Mua';
+                    buyButton.style.background = '#4caf50';
+                    buyButton.onclick = null;
+                    hidePackageContent(contentId);
+                    spinner.style.display = 'none';
+
+                    showToast(`Mua ${packageName} thành công! Đang chuyển đến Telegram...`);
+                    console.log('Redirecting to Telegram...');
+                    setTimeout(() => {
+                        try {
+                            window.location.href = 'https://t.me/limorecloudgame';
+                            console.log('Redirect successful');
+                        } catch (error) {
+                            console.error('Redirect failed:', error);
+                            showToast('Không thể chuyển hướng, vui lòng thử lại!');
+                        }
+                    }, 1000);
+                }, 1000);
+            } else {
+                console.log('Purchase cancelled');
+            }
+        }
+
+        function displayNotifications() {
+            const userNotifications = notifications.filter(n => n.username === currentUser.username && !n.read);
+            const notifList = document.getElementById('notifications-list');
+            notifList.innerHTML = '';
+            userNotifications.forEach((notif, index) => {
+                showToast(notif.message);
+                const p = document.createElement('p');
+                p.textContent = `${notif.date}: ${notif.message}`;
+                notifList.appendChild(p);
+                notifications[notifications.indexOf(notif)].read = true;
+            });
+            localStorage.setItem('notifications', JSON.stringify(notifications));
+        }
+
+        function showSupportForm() {
+            document.getElementById('account-info').style.display = 'none';
+            document.getElementById('support-form').style.display = 'block';
+        }
+
+        function hideSupportForm() {
+            document.getElementById('support-form').style.display = 'none';
+            document.getElementById('support-message').value = '';
+            document.getElementById('account-info').style.display = 'block';
+        }
+
+        function submitSupport() {
+            const message = document.getElementById('support-message').value.trim();
+            if (!message) {
+                showToast('Vui lòng nhập nội dung yêu cầu!');
+                return;
+            }
+
+            supportRequests.push({
+                username: currentUser.username,
+                message: message,
+                date: new Date().toLocaleString('vi-VN'),
+                status: 'pending'
+            });
+            localStorage.setItem('supportRequests', JSON.stringify(supportRequests));
+            showToast('Yêu cầu hỗ trợ đã được gửi! Chờ admin xử lý.');
+            hideSupportForm();
+        }
+
+        function showSupportList() {
+            if (!currentUser || !currentUser.isAdmin) {
+                showToast('Chỉ admin mới có quyền truy cập!');
+                return;
+            }
+            document.getElementById('admin-panel').style.display = 'none';
+            document.getElementById('support-list').style.display = 'block';
+            updateSupportList();
+        }
+
+        function hideSupportList() {
+            document.getElementById('support-list').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'block';
+        }
+
+        function updateSupportList() {
+            const supportList = document.getElementById('support-requests');
+            supportList.innerHTML = '';
+            supportRequests.forEach((req, index) => {
+                const li = document.createElement('li');
+                let buttons = `<button onclick="deleteSupport(${index})">Xóa</button>`;
+                if (req.status === 'pending') {
+                    buttons = `
+                        <button onclick="resolveSupport(${index})" style="background: #4caf50; margin-right: 5px;">Xử Lý</button>
+                        <button onclick="deleteSupport(${index})" style="background: #ff6a88;">Xóa</button>
+                    `;
+                }
+                li.innerHTML = `
+                    <span>${req.username}</span> - 
+                    <span>${req.message}</span> - 
+                    <span>${req.date}</span> - 
+                    <span style="color: ${req.status === 'pending' ? '#ff9800' : '#4caf50'}">[${req.status}]</span>
+                    ${buttons}
+                `;
+                supportList.appendChild(li);
+            });
+        }
+
+        function resolveSupport(index) {
+            const req = supportRequests[index];
+            if (req.status !== 'pending') return;
+
+            req.status = 'resolved';
+            localStorage.setItem('supportRequests', JSON.stringify(supportRequests));
+
+            notifications.push({
+                username: req.username,
+                message: `Yêu cầu hỗ trợ của bạn ("${req.message}") đã được admin xử lý vào ${new Date().toLocaleString('vi-VN')}.`,
+                read: false,
+                date: new Date().toLocaleString('vi-VN')
+            });
+            localStorage.setItem('notifications', JSON.stringify(notifications));
+
+            updateSupportList();
+            showToast(`Đã xử lý yêu cầu của ${req.username}!`);
+        }
+
+        function deleteSupport(index) {
+            if (confirm('Bạn có chắc chắn muốn xóa yêu cầu này?')) {
+                supportRequests.splice(index, 1);
+                localStorage.setItem('supportRequests', JSON.stringify(supportRequests));
+                updateSupportList();
+                showToast('Đã xóa yêu cầu hỗ trợ!');
+            }
+        }
+    </script>
+</body>
+</html>
